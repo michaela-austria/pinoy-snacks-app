@@ -1,0 +1,96 @@
+.date-status{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5rem;
+
+    @media only screen and (max-width: $bp-tablet) {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    &__datetime{
+        font-size: $fs-h6;
+        color: $gray-2;
+        font-weight: $fw-bold;
+        font-variant: small-caps;
+    }
+
+    &__status{
+        font-size: $fs-h5;
+        font-weight: $fw-bold;
+    }
+}
+
+
+
+.choices-data{
+    padding: 2rem 0;
+    color: $brown-1;
+    font-weight: $fw-medium;
+
+    &__cart{
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    &__price{
+        display: flex;
+        align-items: center;
+    }
+}
+
+
+.grid-container__cashamount{
+    padding: 5rem;
+    background-image: linear-gradient(to right bottom, $green-1, $green-2);
+    border-radius: 2rem;
+    color: $gray;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+
+    .inputContainer{
+        display: flex;
+        gap: 1rem;
+        font-weight: $fw-bold;
+
+        &__input{
+            padding: 1.5rem 1rem;
+            border-radius: 5px;
+            flex: 1;
+            border: none;
+            font-family: inherit;
+            font-weight: $fw-medium;
+            color: $black;
+
+            &:focus,
+            &:active{
+                outline-color: $green-1;
+            }
+        }
+
+        &__btn{
+            // background-color: $brown-2 !important;
+            // color: $white;
+            padding: 1.5rem 1rem !important;
+        }
+    }
+}
+
+
+.grid-container__receipt{
+    display: block;
+    margin: 0 auto;
+
+    &>*:not(:last-child){
+        margin-bottom: 1rem;
+    }
+
+    .btn{
+        text-align: center;
+    }
+}
