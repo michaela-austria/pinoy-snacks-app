@@ -85,6 +85,7 @@
 .grid-container__receipt{
     display: block;
     margin: 0 auto;
+    width: 80%;
 
     &>*:not(:last-child){
         margin-bottom: 1rem;

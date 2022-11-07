@@ -4,7 +4,6 @@
     flex-direction: column;
     align-items: center;
     background-color: $white;
-    // width: 100%;
     border: 1px solid $gray-2;
     border-radius: 5px;
 
@@ -13,11 +12,12 @@
     }
 
     &__cartContainer{
-        display: flex;
-        flex-wrap: wrap;
-        
+        width: 60%;
+        display: grid;
+
         &>*{
             margin-bottom: 0.5rem;
+            flex: 1;
         }
     }
 
@@ -27,9 +27,8 @@
     }
 
     &__itemprice{
-        flex: 0 0 50%;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
     }
 
     &__detailsContainer{
