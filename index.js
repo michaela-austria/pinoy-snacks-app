@@ -1,3 +1,5 @@
+'use strict';
+
 const food = [
     {
         id: 1,
@@ -51,12 +53,7 @@ const food = [
 
 ];
 
-console.log(food);
-
-
 const choicesContainer = document.querySelector('.checkboxFood');
-console.log(choicesContainer);
-
 const loadFoodChoices = function(){
     food.forEach(f => {
         const markup = `
@@ -75,9 +72,15 @@ const loadFoodChoices = function(){
                             <div class="checkbox__price">₱ <span><strong>${f.price.toFixed(2)}</strong></span></div>
         
                             <div class="checkbox__number">
-                                <input type="number" class="checkbox__number checkbox__number--userChoice" placeholder="Piece(s)">
-                                <h6 class="checkbox__number checkbox__number--currStock"><span>${f.invetory}</span> pieces available</h6>
+                                <input type="number" min="1" max="${f.invetory}" class="checkbox__number checkbox__number--userChoice" placeholder="Piece(s)">
+                                <h6 class="checkbox__number checkbox__number--currStock"><span class="checkbox__currInventory">${f.invetory}</span> pieces available</h6>                                
                             </div>
+
+                            <h6 class="errorTxt hide">no more stocks left</h6>
+                        </div>
+
+                        <div class="checkbox__userOrder hide">
+                            <strong>₱<span class="checkbox__totalOrder">100</span></strong>
                         </div>
 
 
@@ -89,5 +92,69 @@ const loadFoodChoices = function(){
         choicesContainer.insertAdjacentHTML("beforeend", markup);
     })
 }
-
 loadFoodChoices();
+
+
+
+const piecesInput = document.querySelectorAll('.checkbox__number--userChoice');
+const checkboxes = document.querySelectorAll('.checkbox__icon');
+
+const inventoryContainer = document.querySelectorAll('.checkbox__number--currStock');
+const inventoryOutput = document.querySelectorAll('.checkbox__currInventory');
+const errorTxt = document.querySelectorAll('.errorTxt');
+
+const totalOrderContainer = document.querySelectorAll('.checkbox__userOrder');
+const totalOrderOutput = document.querySelectorAll('.checkbox__totalOrder');
+
+// console.log(piecesInput);
+
+
+const errorMessage = function($value, $message = "error"){
+    errorTxt[$value].classList.toggle('hide');
+    errorTxt[$value].textContent = $message;
+}
+
+
+piecesInput.forEach((pieces, i) => {
+    pieces.addEventListener('change', piece =>{
+
+        let userPieces = +piece.target.value;
+        if(userPieces > food[i].invetory){
+            userPieces = food[i].invetory;
+            piece.target.value = userPieces;
+            errorMessage(i, "no more stocks left");
+        } else if(userPieces < 0){
+            userPieces = 1;
+            piece.target.value = userPieces;
+            errorMessage(i, "invalid number");
+        } else if(userPieces <= food[i].invetory){
+            errorTxt[i].classList.add('hide');
+        }
+                
+
+        inventoryOutput[i].textContent = food[i].invetory - userPieces;
+        
+        checkboxes[i].setAttribute('checked', true);
+        
+        totalOrderContainer[i].classList.remove('hide');
+        totalOrderOutput[i].textContent = food[i].price * userPieces;
+
+    })
+})
+
+checkboxes.forEach((checkbox, i) =>{
+    checkbox.addEventListener('click', check => {
+        if(check.target.checked){
+            piecesInput[i].value = 1;
+            totalOrderContainer[i].classList.remove('hide');
+            totalOrderOutput[i].textContent = food[i].price;
+            
+        } else if(!check.target.checked){
+            piecesInput[i].value = "";
+            inventoryOutput[i].textContent = food[i].invetory;
+            totalOrderContainer[i].classList.add('hide');
+            errorTxt[i].classList.add('hide');
+        }
+    })
+})
+

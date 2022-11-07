@@ -11,3 +11,11 @@
         margin: 5rem;
      }
 }
+
+
+.hide{display: none !important;}
+.errorTxt{
+   font-weight: $fw-xtrabold;
+   font-variant: small-caps;
+   color: rgb(143, 0, 0);
+}

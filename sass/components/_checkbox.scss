@@ -4,6 +4,11 @@
     &:checked~.checkbox {
         background-color: $brown-2;
         color: $white;
+        z-index: -1000;
+    }
+
+    &:checked~.checkbox .checkbox__number--userChoice{
+        color: $black;
     }
 }
 
@@ -18,13 +23,14 @@
     border: 0.5px solid $gray-2;
     border-radius: 0.2rem;
     flex: 0 0 40%;
-
+    
     &__container{
         display: flex;
         flex: 0 0 100%;
         align-items: center;
         justify-content: space-around;
         gap: 1rem;
+        position: relative;
         // padding: 2rem;
     }
 
@@ -51,6 +57,10 @@
         font-size: $fs-h5;
     }   
 
+    &__price{
+        font-size: $fs-caption;
+    }
+
     &__number{
         display: flex;
         align-items: center;
@@ -64,11 +74,11 @@
             font-family: inherit;
             color: inherit;
             font-weight: inherit;
-
-            &[type=number]::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-            }
-
+            
+            // &[type=number]::-webkit-inner-spin-button {
+                //     -webkit-appearance: none;
+                // }
+                
             &:focus{
                 outline-color: $brown-1;
             }
@@ -80,9 +90,11 @@
         }
     }
 
-    // &__icon:checked .checkbox__container{
-    //     background-color: aqua;
-    // }
+    &__userOrder{
+        position: absolute;
+        right: 0;
+        font-size: $fs-h6;
+    }
 }
 
 
