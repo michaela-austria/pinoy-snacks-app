@@ -126,7 +126,7 @@ piecesInput.forEach((pieces, i) => {
         } else if(userPieces < 0){
             userPieces = 1;
             piece.target.value = userPieces;
-            errorMessage(i, "invalid number");
+            errorMessage(i, "invalid number, your input defaulted to 1");
         } else if(userPieces <= food[i].invetory){
             errorTxt[i].classList.add('hide');
         }
