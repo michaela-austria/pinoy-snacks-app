@@ -53,6 +53,14 @@ const food = [
 
 ];
 
+let userAccount = {
+    username: 'test',
+    password: 'test',
+    cart: []
+};
+
+// console.log(userAccount);
+
 const choicesContainer = document.querySelector('.checkboxFood');
 const loadFoodChoices = function(){
     food.forEach(f => {
@@ -72,7 +80,7 @@ const loadFoodChoices = function(){
                             <div class="checkbox__price">₱ <span><strong>${f.price.toFixed(2)}</strong></span></div>
         
                             <div class="checkbox__number">
-                                <input type="number" min="1" max="${f.invetory}" class="checkbox__number checkbox__number--userChoice" placeholder="Piece(s)">
+                                <input type="number" min="1" max="${f.invetory}" class="checkbox__number checkbox__number--userChoice" placeholder="Piece(s)" id="${f.id}" disabled>
                                 <h6 class="checkbox__number checkbox__number--currStock"><span class="checkbox__currInventory">${f.invetory}</span> pieces available</h6>                                
                             </div>
 
@@ -106,55 +114,132 @@ const errorTxt = document.querySelectorAll('.errorTxt');
 const totalOrderContainer = document.querySelectorAll('.checkbox__userOrder');
 const totalOrderOutput = document.querySelectorAll('.checkbox__totalOrder');
 
-// console.log(piecesInput);
+const cartCountOutput = document.querySelector('.cartCount');
+const cartAmountOutput = document.querySelector('.cartAmount');
+
+const btnBuyNow = document.querySelector('.buyNowBtn');
 
 
-const errorMessage = function($value, $message = "error"){
+
+const errorMessageCheckbox = function($value, $message = "error"){
     errorTxt[$value].classList.toggle('hide');
     errorTxt[$value].textContent = $message;
 }
 
 
-piecesInput.forEach((pieces, i) => {
-    pieces.addEventListener('change', piece =>{
-
-        let userPieces = +piece.target.value;
-        if(userPieces > food[i].invetory){
-            userPieces = food[i].invetory;
-            piece.target.value = userPieces;
-            errorMessage(i, "no more stocks left");
-        } else if(userPieces < 0){
-            userPieces = 1;
-            piece.target.value = userPieces;
-            errorMessage(i, "invalid number, your input defaulted to 1");
-        } else if(userPieces <= food[i].invetory){
-            errorTxt[i].classList.add('hide');
-        }
-                
-
-        inventoryOutput[i].textContent = food[i].invetory - userPieces;
-        
-        checkboxes[i].setAttribute('checked', true);
-        
-        totalOrderContainer[i].classList.remove('hide');
-        totalOrderOutput[i].textContent = food[i].price * userPieces;
-
-    })
-})
-
 checkboxes.forEach((checkbox, i) =>{
     checkbox.addEventListener('click', check => {
         if(check.target.checked){
             piecesInput[i].value = 1;
+            piecesInput[i].disabled = false;
             totalOrderContainer[i].classList.remove('hide');
             totalOrderOutput[i].textContent = food[i].price;
+            updateCartArray(+piecesInput[i].id, 1, food[i].price * 1);
+            calcCart();
             
         } else if(!check.target.checked){
             piecesInput[i].value = "";
+            piecesInput[i].disabled = true;
             inventoryOutput[i].textContent = food[i].invetory;
             totalOrderContainer[i].classList.add('hide');
             errorTxt[i].classList.add('hide');
         }
     })
+})
+
+
+const calcCart = function(){  
+    // Sort arrays in descending, to get the latest input of user per choice 
+    const sortCart = userAccount.cart.sort((a,b) => b.pieces - a.pieces);
+
+    // Remove duplicate inputs
+    const filteredCart = sortCart.reduce((acc, current) => {
+        const x = acc.find(item => item.id === current.id);
+        if (!x){
+            return acc.concat([current]);
+        } else {
+            return acc;
+        }
+    },  []);
+
+    //replace cart array
+    userAccount.cart = [];
+    userAccount.cart = [...filteredCart];
+
+    
+    //count and total computation
+    const cartCount = userAccount.cart.reduce((acc, current) => acc.pieces + current.pieces);
+    const cartAmount = userAccount.cart.reduce((acc, current) => acc.amount + current.amount);
+    
+    //adding count and total on object
+    userAccount.totalCount = cartCount.pieces;
+    userAccount.totalAmount = cartAmount.amount;
+
+    //updating count and total
+    cartCountOutput.textContent = cartCount.pieces ||  userAccount.totalCount || cartCount;
+    cartAmountOutput.textContent = cartAmount.amount || userAccount.totalAmount || cartAmount;
+
+}
+
+
+
+const updateCartArray = function($id, $pieces, $amount){
+    userAccount.cart.push({id: $id, 
+                            pieces: $pieces,
+                            amount: $amount});
+}
+
+
+piecesInput.forEach((pieces, i) => {
+    pieces.addEventListener('change', piece =>{
+        const foodID = +piece.target.id;
+
+        //gets value of pieces of selected choice
+        let userPieces = +piece.target.value;
+
+        //Maximum Input Value
+        if(userPieces > food[i].invetory){
+            userPieces = food[i].invetory;
+            piece.target.value = userPieces;
+
+            errorMessageCheckbox(i, "no more stocks left");
+
+            //adding maximum input value
+            updateCartArray(foodID, userPieces, food[i].price * userPieces);
+            calcCart();
+        } 
+        
+        // Minimum Input Value
+        else if(userPieces < 0){
+            userPieces = 1;
+            piece.target.value = userPieces;
+
+            errorMessageCheckbox(i, "invalid number, your input defaulted to 1");
+
+            //adding minimum input value
+            updateCartArray(foodID, userPieces, food[i].price * userPieces);
+            calcCart();
+        } 
+        
+        else if(userPieces <= food[i].invetory){
+            errorTxt[i].classList.add('hide');
+
+            //update inventory of selected choice
+            inventoryOutput[i].textContent = food[i].invetory - userPieces;
+
+            //change to color orange
+            checkboxes[i].setAttribute('checked', true);
+            
+            //show & compute of total amount per of selected choice
+            totalOrderContainer[i].classList.remove('hide');
+            totalOrderOutput[i].textContent = food[i].price * userPieces;
+
+            //adding other user inputs to array
+            updateCartArray(foodID, userPieces, food[i].price * userPieces);
+            calcCart();
+            
+            
+        }
+    });
 })
 
