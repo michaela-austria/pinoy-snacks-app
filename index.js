@@ -127,28 +127,7 @@ const errorMessageCheckbox = function($value, $message = "error"){
 }
 
 
-checkboxes.forEach((checkbox, i) =>{
-    checkbox.addEventListener('click', check => {
-        if(check.target.checked){
-            piecesInput[i].value = 1;
-            piecesInput[i].disabled = false;
-            totalOrderContainer[i].classList.remove('hide');
-            totalOrderOutput[i].textContent = food[i].price;
-            updateCartArray(+piecesInput[i].id, 1, food[i].price * 1);
-            calcCart();
-            
-        } else if(!check.target.checked){
-            piecesInput[i].value = "";
-            piecesInput[i].disabled = true;
-            inventoryOutput[i].textContent = food[i].invetory;
-            totalOrderContainer[i].classList.add('hide');
-            errorTxt[i].classList.add('hide');
-        }
-    })
-})
-
-
-const calcCart = function(){  
+const filterCart = function(){  
     // Sort arrays in descending, to get the latest input of user per choice 
     const sortCart = userAccount.cart.sort((a,b) => b.pieces - a.pieces);
 
@@ -167,13 +146,13 @@ const calcCart = function(){
     userAccount.cart = [...filteredCart];
 
     
-    //count and total computation
-    const cartCount = userAccount.cart.reduce((acc, current) => acc.pieces + current.pieces);
-    const cartAmount = userAccount.cart.reduce((acc, current) => acc.amount + current.amount);
+    // // //count and total computation
+    const cartCount = userAccount.cart.reduce((acc, current) => acc + current.pieces,0);
+    const cartAmount = userAccount.cart.reduce((acc, current) => acc + current.amount, 0);
     
     //adding count and total on object
-    userAccount.totalCount = cartCount.pieces;
-    userAccount.totalAmount = cartAmount.amount;
+    userAccount.totalCount = cartCount;
+    userAccount.totalAmount = cartAmount;
 
     //updating count and total
     cartCountOutput.textContent = cartCount.pieces ||  userAccount.totalCount || cartCount;
@@ -182,12 +161,34 @@ const calcCart = function(){
 }
 
 
-
 const updateCartArray = function($id, $pieces, $amount){
     userAccount.cart.push({id: $id, 
                             pieces: $pieces,
                             amount: $amount});
 }
+
+
+checkboxes.forEach((checkbox, i) =>{
+    checkbox.addEventListener('click', check => {
+        if(check.target.checked){
+            piecesInput[i].value = 1;
+            piecesInput[i].disabled = false;
+            totalOrderContainer[i].classList.remove('hide');
+            totalOrderOutput[i].textContent = food[i].price;
+            updateCartArray(+piecesInput[i].id, 1, food[i].price * 1);
+            filterCart();
+            
+        } else if(!check.target.checked){
+            piecesInput[i].value = "";
+            piecesInput[i].disabled = true;
+            inventoryOutput[i].textContent = food[i].invetory;
+            totalOrderContainer[i].classList.add('hide');
+            errorTxt[i].classList.add('hide');
+        }
+    })
+})
+
+
 
 
 piecesInput.forEach((pieces, i) => {
@@ -206,7 +207,7 @@ piecesInput.forEach((pieces, i) => {
 
             //adding maximum input value
             updateCartArray(foodID, userPieces, food[i].price * userPieces);
-            calcCart();
+            filterCart();
         } 
         
         // Minimum Input Value
@@ -218,7 +219,7 @@ piecesInput.forEach((pieces, i) => {
 
             //adding minimum input value
             updateCartArray(foodID, userPieces, food[i].price * userPieces);
-            calcCart();
+            filterCart();
         } 
         
         else if(userPieces <= food[i].invetory){
@@ -236,10 +237,12 @@ piecesInput.forEach((pieces, i) => {
 
             //adding other user inputs to array
             updateCartArray(foodID, userPieces, food[i].price * userPieces);
-            calcCart();
+            filterCart();
             
             
         }
     });
-})
 
+
+    
+})
