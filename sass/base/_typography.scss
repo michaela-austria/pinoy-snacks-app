@@ -12,7 +12,11 @@ body{
 }
 
 .heading-2{
-    font-size: $fs-h2;
+    font-size: $fs-h3;
+    
+    @media only screen and (max-width: $bp-laptop) {
+        font-size: $fs-h5;
+    }
 }
 
 .heading-6{

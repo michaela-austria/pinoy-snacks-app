@@ -1,6 +1,10 @@
 .margin-default{
     margin: 5rem 10rem;
 
+    @media only screen and (max-width: $bp-laptop) {
+      margin: 5rem;
+    }
+
     @media only screen and (max-width: $bp-tablet) {
         margin: 5rem 2rem;
          

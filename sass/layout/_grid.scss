@@ -1,14 +1,13 @@
 .grid-container{
     display: grid;  
     grid-template-rows: min-content 1fr;
-    // grid-template-columns: 75rem 1fr;
-    grid-template-columns: minmax(min-content, 75rem) 1fr;
+    grid-template-columns: minmax(min-content, 70rem) minmax(32.888rem, 1fr);
     gap: 1rem;
     
     //768px
     @media only screen and (max-width: $bp-tablet) {
-        // grid-template-rows: min-content repeat(2, 1fr);
-        grid-template-columns: repeat(auto-fill, minmax(min-content, 1fr));
+        grid-template-rows: repeat(3, min-content 1fr);
+        grid-template-columns: 1fr;
         
     }
 
@@ -20,7 +19,6 @@
         grid-row: 1 / -1;
         display: flex;
         flex-direction: column;
-        // justify-content: space-between;
 
         @media only screen and (max-width: $bp-laptop) {
            justify-content: flex-start;
@@ -45,6 +43,11 @@
         &--choices-data{
             display: flex;
             justify-content: space-around;
+            order: -1;
+
+            @media only screen and (max-width: $bp-tablet) {
+                order: 1;
+            }
         }
     }
 
@@ -59,7 +62,6 @@
     }
 
     &__receipt{
-        // background-color: chartreuse;
         grid-column: 2/-1;
 
         @media only screen and (max-width: $bp-tablet) {

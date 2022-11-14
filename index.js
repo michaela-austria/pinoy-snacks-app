@@ -81,7 +81,7 @@ const loadFoodChoices = function(){
         
                             <div class="checkbox__number">
                                 <input type="number" min="1" max="${f.invetory}" class="checkbox__number checkbox__number--userChoice" placeholder="Piece(s)" id="${f.id}" disabled>
-                                <h6 class="checkbox__number checkbox__number--currStock"><span class="checkbox__currInventory">${f.invetory}</span> pieces available</h6>                                
+                                <h6 class="checkbox__number checkbox__number--currStock"><span class="checkbox__currInventory">${f.invetory}</span> piece(s)</h6>                                
                             </div>
 
                             <h6 class="errorTxt hide">no more stocks left</h6>
@@ -152,7 +152,7 @@ const updateReceipt = function(){
     })
 
     receiptCashOutput.textContent = 0;
-    receiptCashOutput.textContent = userAccount.cash;
+    receiptCashOutput.textContent = userAccount.cash ?? 0;
 
     receiptChangeOutput.textContent = 0;
     const userChange = userAccount?.cash - userAccount.totalAmount;

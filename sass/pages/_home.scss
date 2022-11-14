@@ -44,14 +44,20 @@
 
 
 .grid-container__cashamount{
-    padding: 5rem;
+    padding: 3rem;
     background-image: linear-gradient(to right bottom, $green-1, $green-2);
-    border-radius: 2rem;
+    border-radius: 0.5rem;
     color: $gray;
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 1rem;
+
+    @media only screen and (max-width: $bp-laptop) {
+        padding: 3rem;
+    }
+
+
 
     .inputContainer{
         display: flex;
@@ -86,6 +92,10 @@
     display: block;
     margin: 0 auto;
     width: 80%;
+
+    @media only screen and (max-width: $bp-laptop) {
+        width: 100%;
+    }
 
     &>*:not(:last-child){
         margin-bottom: 1rem;
