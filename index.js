@@ -156,7 +156,7 @@ const updateReceipt = function(){
 
     receiptChangeOutput.textContent = 0;
     const userChange = userAccount?.cash - userAccount.totalAmount;
-    if(userChange <= 0){
+    if(userChange < 0){
         btnProceedToCounter.classList.add("opacity");
         receiptErrorTxt.classList.remove("hide");
         receiptErrorTxt.textContent = "Insufficient Amount";
