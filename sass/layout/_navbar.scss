@@ -6,15 +6,36 @@
     padding: 0 5rem;
     border-bottom: 1px solid rgba($black, 0.2);
 
+    @media only screen and (max-width: $bp-tablet) {
+        flex-direction: column;
+        height: 15rem;
+        justify-content: center;
+    }
+
     &__left{
-        font-size: $fs-h6;
+        display: flex;
+        align-items: center;
+
+        &--imgContainer{
+            width: 8rem;
+        }
+        
+        &--img{
+            display: block;
+            width: 100%;
+        }
     }
-
-    &__right{
-
-    }
-
+    
     &__input{
+        padding: 1rem 2rem;
+        border: none;
+        font-family: inherit;
+        color: inherit;
+        border-radius: 0.5rem;
+        flex: 1;
 
+        &:focus{
+            outline: $brown-2;
+        }
     }
 }

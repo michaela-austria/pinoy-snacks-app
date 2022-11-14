@@ -10,11 +10,15 @@
         gap: 1rem;
     }
 
+    h3{
+        font-size: $fs-h4;
+    }
+
     &__datetime{
-        font-size: $fs-h6;
+        font-size: $fs-base;
         color: $gray-2;
         font-weight: $fw-bold;
-        font-variant: small-caps;
+        // font-variant: small-caps;
     }
 
     &__status{
@@ -91,7 +95,7 @@
 .grid-container__receipt{
     display: block;
     margin: 0 auto;
-    width: 80%;
+    width: 100%;
 
     @media only screen and (max-width: $bp-laptop) {
         width: 100%;

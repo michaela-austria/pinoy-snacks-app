@@ -59,8 +59,6 @@ let userAccount = {
     cart: []
 };
 
-// console.log(userAccount);
-
 const choicesContainer = document.querySelector('.checkboxFood');
 const loadFoodChoices = function(){
     food.forEach(f => {
@@ -129,6 +127,28 @@ const receiptErrorTxt = document.querySelector('.receipt__detailsContainer .erro
 
 const btnProceedToCounter = document.querySelector('.grid-container__receiptBtn');
 
+// === DATE AND TIME ====
+const dynamicDateTime = document.querySelector('.dynamicDateTime');
+const receiptDateTime = document.querySelector('.receipt__datetime');
+const monthsArr = ['January', 'Februar', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+const displayDateTime = function($container){
+    const now = new Date();
+    const options = {
+      month: 'long',
+      day: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    }
+
+    dynamicDateTime.textContent = new Intl.DateTimeFormat('en-US', options).format(now);
+    $container.textContent = new Intl.DateTimeFormat('en-US', options).format(now);
+}
+
+setInterval(displayDateTime, 1000);
+
 
 // === RECEIPT FUNCTION ===
 const updateReceipt = function(){
@@ -172,6 +192,8 @@ const updateReceipt = function(){
         receiptChangeOutput.textContent = userChange || 0;
         
     }
+
+    displayDateTime(receiptDateTime);
 }
 
 
@@ -341,3 +363,7 @@ inputEnterCash.addEventListener('change', function(){
     }
 
 })
+
+
+
+
