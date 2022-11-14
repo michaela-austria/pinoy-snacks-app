@@ -14,9 +14,15 @@
 
 
 .hide{display: none !important;}
+
 .errorTxt{
    font-weight: $fw-xtrabold;
    font-size: 0.9rem;
    // font-variant: small-caps;
    color: rgb(143, 0, 0);
+}
+
+.opacity{
+   opacity: 10%;
+   z-index: -1000;
 }

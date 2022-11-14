@@ -40,8 +40,8 @@
                             <iconify-icon inline icon="dashicons:cart" width="20" height="20"></iconify-icon>
                             <span class="cartCount">0</span>
                         </p>
-                        <p class="choices-data__price">₱ <span class="cartAmount">amount</span></p>
-                        <button class="choices-data__btn btn buyNowBtn">Buy Now</button>
+                        <p class="choices-data__price">₱ <span class="cartAmount">0</span></p>
+                        <button class="choices-data__btn btn buyNowBtn hide">Buy Now</button>
                     </div>
                     
                     
@@ -51,8 +51,9 @@
                     <h5 class="heading-2">Enter your cash</h5>
                     <div class="inputContainer">
                         <input type="number" class="inputContainer__input" placeholder="Enter ₱ amount">
-                        <button class="inputContainer__btn btn btn--orange">Confirm cash →</button>
+                        <button class="inputContainer__btn btn btn--orange hide">Confirm cash →</button>
                     </div>
+                    <h6 class="errorTxt hide">Invalid amount</h6>
                 </div>
 
                 <div class="grid-container__receipt">
@@ -61,22 +62,7 @@
                         <p class="receipt__datetime">date time</p>
 
                         <div class="receipt__cartContainer">
-                            <div class="receipt__itemprice">
-                                <div class="receipt__itemprice--item">BBQ</div>
-                                <div class="receipt__itemprice--price">20</div>
-                            </div>
-                            <div class="receipt__itemprice">
-                                <div class="receipt__itemprice--item">BBQ</div>
-                                <div class="receipt__itemprice--price">20</div>
-                            </div>
-                            <div class="receipt__itemprice">
-                                <div class="receipt__itemprice--item">BBQ</div>
-                                <div class="receipt__itemprice--price">20</div>
-                            </div>
-                            <div class="receipt__itemprice">
-                                <div class="receipt__itemprice--item">BBQ</div>
-                                <div class="receipt__itemprice--price">20</div>
-                            </div>
+
                         </div>
 
 
@@ -84,29 +70,30 @@
 
                             <div class="receipt__totalitems">
                                 <div class="receipt__totalitems--item">Items</div>
-                                <div class="receipt__totalitems--price">20</div>
+                                <div class="receipt__totalitems--price"><span class="receiptItemsCount"></span></div>
                             </div>
                             
                             <div class="receipt__totalprice">
                                 <div class="receipt__totalprice--item">TOTAL</div>
-                                <div class="receipt__totalprice--price">20</div>
+                                <div class="receipt__totalprice--price">₱ <span class="receiptTotalAmount"></span></div>
                             </div>
                             
                             <div class="receipt__cashamount">
                                 <div class="receipt__cashamount--item">Cash</div>
-                                <div class="receipt__cashamount--price">20</div>
+                                <div class="receipt__cashamount--price">₱ <span class="receiptCash"></span></div>
                             </div>
                             
                             <div class="receipt__cashchange">
                                 <div class="receipt__cashchange--item">Change</div>
-                                <div class="receipt__cashchange--price">20</div>
+                                <div class="receipt__cashchange--price">₱ <span class="receiptChange"></span></div>
                             </div>
+                            <h6 class="errorTxt hide">Insufficient Amount</h6>
                             
                         </div>
                             
                     </div>
 
-                    <div class="grid-container__receipt btn btn--orange">Proceed to Counter →</div>
+                    <div class="grid-container__receiptBtn btn btn--orange opacity">Proceed to Counter →</div>
                 </div>
             </section>
 

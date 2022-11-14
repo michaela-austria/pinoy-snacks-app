@@ -117,15 +117,69 @@ const totalOrderOutput = document.querySelectorAll('.checkbox__totalOrder');
 const cartCountOutput = document.querySelector('.cartCount');
 const cartAmountOutput = document.querySelector('.cartAmount');
 
-const btnBuyNow = document.querySelector('.buyNowBtn');
+const inputEnterCash = document.querySelector('.inputContainer__input');
+const errorCashAmount = document.querySelector('.grid-container__cashamount .errorTxt');
+
+const receiptCartOutput = document.querySelector('.receipt__cartContainer');
+const receiptItemCountOutput = document.querySelector('.receiptItemsCount');
+const receiptTotalAmountOutput = document.querySelector('.receiptTotalAmount');
+const receiptCashOutput = document.querySelector('.receiptCash');
+const receiptChangeOutput = document.querySelector('.receiptChange');
+const receiptErrorTxt = document.querySelector('.receipt__detailsContainer .errorTxt');
+
+const btnProceedToCounter = document.querySelector('.grid-container__receiptBtn');
 
 
+// === RECEIPT FUNCTION ===
+const updateReceipt = function(){
+    receiptCartOutput.textContent = "";
+    receiptItemCountOutput.textContent = 0;
+    receiptTotalAmountOutput.textContent = 0;
 
+    userAccount.cart.forEach(item => {
+        const markup = `
+            <div class="receipt__itemprice">
+                <div class="receipt__itemprice--item">${item.name}</div>
+                <div class="receipt__itemprice--pieces"><span class="receiptItemCartPieces">${item.pieces}</span> piece(s)</div>
+                <div class="receipt__itemprice--price">₱ <span class="receiptItemCartAmount">${item.amount}</span></div>
+            </div>
+        `;
+
+        
+        receiptCartOutput.insertAdjacentHTML('beforeend', markup);
+        receiptItemCountOutput.textContent = userAccount.totalCount;
+        receiptTotalAmountOutput.textContent = userAccount.totalAmount;
+    })
+
+    receiptCashOutput.textContent = 0;
+    receiptCashOutput.textContent = userAccount.cash;
+
+    receiptChangeOutput.textContent = 0;
+    const userChange = userAccount?.cash - userAccount.totalAmount;
+    if(userChange <= 0){
+        btnProceedToCounter.classList.add("opacity");
+        receiptErrorTxt.classList.remove("hide");
+        receiptErrorTxt.textContent = "Insufficient Amount";
+    }
+    else if(userAccount.cart.length === 0){
+        btnProceedToCounter.classList.add("opacity");
+        receiptErrorTxt.classList.remove("hide");
+        receiptErrorTxt.textContent = "Add something to your cart";
+    } 
+    else{
+        btnProceedToCounter.classList.remove("opacity");
+        receiptErrorTxt.classList.add("hide");
+        receiptChangeOutput.textContent = userChange || 0;
+        
+    }
+}
+
+
+//  === FOOD MENU FUNCTIONS ===
 const errorMessageCheckbox = function($value, $message = "error"){
     errorTxt[$value].classList.toggle('hide');
     errorTxt[$value].textContent = $message;
 }
-
 
 const filterCart = function(){  
     // Sort arrays in descending, to get the latest input of user per choice 
@@ -146,7 +200,18 @@ const filterCart = function(){
     userAccount.cart = [...filteredCart];
 
     
-    // // //count and total computation
+}
+
+const removeItem = function($id){
+    const newCart = userAccount.cart.filter(item => item.id != $id);
+    
+    //replace cart array
+    userAccount.cart = [];
+    userAccount.cart =  [...newCart];
+}
+
+const displayCart = function(){
+    //count and total computation
     const cartCount = userAccount.cart.reduce((acc, current) => acc + current.pieces,0);
     const cartAmount = userAccount.cart.reduce((acc, current) => acc + current.amount, 0);
     
@@ -158,13 +223,15 @@ const filterCart = function(){
     cartCountOutput.textContent = cartCount.pieces ||  userAccount.totalCount || cartCount;
     cartAmountOutput.textContent = cartAmount.amount || userAccount.totalAmount || cartAmount;
 
+    updateReceipt();
 }
 
 
-const updateCartArray = function($id, $pieces, $amount){
+const updateCartArray = function($id, $pieces, $amount, $name){
     userAccount.cart.push({id: $id, 
                             pieces: $pieces,
-                            amount: $amount});
+                            amount: $amount,
+                            name: $name});
 }
 
 
@@ -173,10 +240,13 @@ checkboxes.forEach((checkbox, i) =>{
         if(check.target.checked){
             piecesInput[i].value = 1;
             piecesInput[i].disabled = false;
+            inventoryOutput[i].textContent = food[i].invetory - 1;
             totalOrderContainer[i].classList.remove('hide');
             totalOrderOutput[i].textContent = food[i].price;
-            updateCartArray(+piecesInput[i].id, 1, food[i].price * 1);
+            let foodName = check.path[0].id;
+            updateCartArray(+piecesInput[i].id, 1, food[i].price * 1, foodName);
             filterCart();
+            displayCart();
             
         } else if(!check.target.checked){
             piecesInput[i].value = "";
@@ -184,16 +254,18 @@ checkboxes.forEach((checkbox, i) =>{
             inventoryOutput[i].textContent = food[i].invetory;
             totalOrderContainer[i].classList.add('hide');
             errorTxt[i].classList.add('hide');
+            removeItem(+piecesInput[i].id);
+            displayCart();
+            updateReceipt();
         }
     })
 })
 
 
-
-
 piecesInput.forEach((pieces, i) => {
     pieces.addEventListener('change', piece =>{
         const foodID = +piece.target.id;
+        let foodName = piece.path[2].children[0].textContent;
 
         //gets value of pieces of selected choice
         let userPieces = +piece.target.value;
@@ -206,8 +278,9 @@ piecesInput.forEach((pieces, i) => {
             errorMessageCheckbox(i, "no more stocks left");
 
             //adding maximum input value
-            updateCartArray(foodID, userPieces, food[i].price * userPieces);
+            updateCartArray(foodID, userPieces, food[i].price * userPieces, foodName);
             filterCart();
+            displayCart();
         } 
         
         // Minimum Input Value
@@ -218,8 +291,9 @@ piecesInput.forEach((pieces, i) => {
             errorMessageCheckbox(i, "invalid number, your input defaulted to 1");
 
             //adding minimum input value
-            updateCartArray(foodID, userPieces, food[i].price * userPieces);
+            updateCartArray(foodID, userPieces, food[i].price * userPieces, foodName);
             filterCart();
+            displayCart();
         } 
         
         else if(userPieces <= food[i].invetory){
@@ -236,13 +310,34 @@ piecesInput.forEach((pieces, i) => {
             totalOrderOutput[i].textContent = food[i].price * userPieces;
 
             //adding other user inputs to array
-            updateCartArray(foodID, userPieces, food[i].price * userPieces);
+            updateCartArray(foodID, userPieces, food[i].price * userPieces, foodName);
             filterCart();
-            
+            displayCart();           
             
         }
     });
 
 
     
+})
+
+
+// === ENTER CASH FUNCTION ===
+inputEnterCash.addEventListener('change', function(){
+
+    if(+inputEnterCash.value <= 0){
+        errorCashAmount.classList.remove('hide');
+        inputEnterCash.value = "";
+        userAccount.cash = 0;
+
+        updateReceipt();
+        
+    } else {
+        errorCashAmount.classList.add('hide');
+        userAccount.cash = 0;
+        userAccount.cash = +inputEnterCash.value;
+
+        updateReceipt();
+    }
+
 })
