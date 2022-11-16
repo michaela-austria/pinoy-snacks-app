@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "watch:css": "sass sass/main.scss css/style.css -w",
-    "devserver": "live-server",
+    "devserver": "live-server --browser=safari",
     "start": "npm-run-all --parallel watch:css devserver",
     "compile:sass": "sass sass/main.scss css/style.comp.css",
     "concat:css": "concat -o css/style.concat.css css/style.comp.css",

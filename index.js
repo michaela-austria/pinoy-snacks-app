@@ -374,8 +374,9 @@ piecesInput.forEach((pieces, i) => {
         if(userPieces > food[i].invetory){
             userPieces = food[i].invetory;
             piece.target.value = userPieces;
+            inventoryOutput[i].textContent = 0;
 
-            errorMessageCheckbox(i, "no more stocks left");
+            errorMessageCheckbox(i, "no more stocks left, your input defaulted to max value");
 
             //adding maximum input value
             updateCartArray(foodID, userPieces, food[i].price * userPieces, foodName);
@@ -384,9 +385,10 @@ piecesInput.forEach((pieces, i) => {
         } 
         
         // Minimum Input Value
-        else if(userPieces < 0){
+        else if(userPieces < 0 || userPieces == ""){
             userPieces = 1;
             piece.target.value = userPieces;
+            inventoryOutput[i].textContent = food[i].invetory - userPieces;
 
             errorMessageCheckbox(i, "invalid number, your input defaulted to 1");
 
