@@ -365,7 +365,7 @@ checkboxes.forEach((checkbox, i) =>{
 piecesInput.forEach((pieces, i) => {
     pieces.addEventListener('change', piece =>{
         const foodID = +piece.target.id;
-        let foodName = food[+piece.target.id].name ?? piece.path[2].children[0].textContent; // for safari ?? for chrome
+        let foodName = food[foodID - 1].name;
 
         //gets value of pieces of selected choice
         let userPieces = +piece.target.value;
