@@ -503,5 +503,13 @@ btnProceedToCounter.addEventListener('click', function(){
         updateHideUI();
         messageText.textContent = "Please proceed to the counter.";
         document.querySelector('.message h3').classList.remove('hide');
+        alert("Please proceed to the counter. Order again? Enter your name.")
     }
 });
+
+
+
+// DYNAMIC YEAR
+const currDate = new Date();
+const dynamicYear = document.querySelector('.dynamicYear');
+dynamicYear.textContent = currDate.getFullYear();
