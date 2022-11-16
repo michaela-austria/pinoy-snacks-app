@@ -54,10 +54,11 @@ const food = [
 ];
 
 let userAccount = {
-    username: 'test',
-    password: 'test',
+    username: '',
     cart: []
 };
+
+
 
 const choicesContainer = document.querySelector('.checkboxFood');
 const loadFoodChoices = function(){
@@ -102,6 +103,9 @@ loadFoodChoices();
 
 
 
+const mainApp = document.querySelector('.app');
+const message = document.querySelector('.message');
+
 const piecesInput = document.querySelectorAll('.checkbox__number--userChoice');
 const checkboxes = document.querySelectorAll('.checkbox__icon');
 
@@ -127,11 +131,26 @@ const receiptErrorTxt = document.querySelector('.receipt__detailsContainer .erro
 
 const btnProceedToCounter = document.querySelector('.grid-container__receiptBtn');
 
-// === DATE AND TIME ====
+
+const messageOutput = document.querySelector('.message');
+const messageText = document.querySelector('.message h1');
+const nameInput = document.querySelector('.navbar__input');
+const btnNameSubmit = document.querySelector('.navbar__btn');
+const btnExit = document.querySelector('.navbar__btnexit');
+const messageError = document.querySelector(".message .errorTxt");
+const userNameDisplay = document.querySelector(".userName");
+
+
 const dynamicDateTime = document.querySelector('.dynamicDateTime');
 const receiptDateTime = document.querySelector('.receipt__datetime');
 const monthsArr = ['January', 'Februar', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+const logoutTimer = document.querySelector('.timer');
 
+
+let timer;
+
+
+// === DATE AND TIME ====
 const displayDateTime = function($container){
     const now = new Date();
     const options = {
@@ -144,10 +163,37 @@ const displayDateTime = function($container){
     }
 
     dynamicDateTime.textContent = new Intl.DateTimeFormat('en-US', options).format(now);
-    $container.textContent = new Intl.DateTimeFormat('en-US', options).format(now);
+    $container ? $container.textContent = new Intl.DateTimeFormat('en-US', options).format(now) : ""; 
 }
 
-setInterval(displayDateTime, 1000);
+const startLogOutTime = function(){
+    let time = 120;
+
+    const tick = function(){
+        const min = String(Math.trunc(time/60)).padStart(2,0);
+        const sec = String(time % 60).padStart(2,0);
+        logoutTimer.textContent = `${min}:${sec}`;
+
+        time--;
+
+        if(time === 0){
+            updateHideUI();
+            document.querySelector('.message h3').classList.remove('hide');
+            document.querySelector('.message h3').textContent = "You've been inactive...";
+        }
+    }
+
+
+    tick();
+    const timer = setInterval(tick, 1000);
+
+    return timer;
+}
+
+
+
+
+
 
 
 // === RECEIPT FUNCTION ===
@@ -257,6 +303,42 @@ const updateCartArray = function($id, $pieces, $amount, $name){
 }
 
 
+const clearCheckbox = function ($counter) {
+    piecesInput[$counter].value = "";
+    piecesInput[$counter].disabled = true;
+    inventoryOutput[$counter].textContent = food[$counter].invetory;
+    totalOrderContainer[$counter].classList.add('hide');
+    errorTxt[$counter].classList.add('hide');
+}
+
+const updateHideUI = function(){
+    // Change UI
+    btnExit.classList.add('hide');
+
+    mainApp.style.opacity = 0;
+    
+    message.classList.remove('hide');
+    message.style.opacity = 100;
+
+    // Resetting 
+    const clear = {
+        username: '',
+        cart: []
+    }
+    userAccount = "";
+    userAccount = clear;
+
+    checkboxes.forEach(choice => {choice.checked = false;})
+    piecesInput.forEach(input => {input.value = ""; input.disabled = true;});
+    inventoryOutput.forEach((_, i) => { clearCheckbox(i);});
+    cartCountOutput.textContent = cartAmountOutput.textContent = 0;
+    inputEnterCash.value = "";
+}
+
+// === EVENT HANDLERS ===
+
+
+
 checkboxes.forEach((checkbox, i) =>{
     checkbox.addEventListener('click', check => {
         if(check.target.checked){
@@ -271,11 +353,7 @@ checkboxes.forEach((checkbox, i) =>{
             displayCart();
             
         } else if(!check.target.checked){
-            piecesInput[i].value = "";
-            piecesInput[i].disabled = true;
-            inventoryOutput[i].textContent = food[i].invetory;
-            totalOrderContainer[i].classList.add('hide');
-            errorTxt[i].classList.add('hide');
+            clearCheckbox(i);
             removeItem(+piecesInput[i].id);
             displayCart();
             updateReceipt();
@@ -367,3 +445,61 @@ inputEnterCash.addEventListener('change', function(){
 
 
 
+// === LOG IN ===
+btnNameSubmit.addEventListener('click', function(e){
+    e.preventDefault();
+    const userName = nameInput.value;
+    
+    if(userName === ""){
+        messageError.classList.remove('hide');
+    } else {
+
+        setInterval(displayDateTime, 1000);
+
+        userAccount.username = userName;
+        
+        message.style.opacity = 0;
+        mainApp.style.opacity = 100;
+        message.classList.add('hide');
+        mainApp.classList.remove('hide');
+        btnExit.classList.remove('hide');
+        
+        userNameDisplay.textContent = userAccount.username;
+        
+        updateReceipt();
+        nameInput.value = "";
+
+        if(timer) clearInterval(timer);
+        timer = startLogOutTime();
+    }
+})
+
+document.querySelector('body').addEventListener('click', function(){
+    clearInterval(timer);
+    timer = startLogOutTime();
+});
+
+
+// === Exit ===
+btnExit.addEventListener('click', function(){
+    updateHideUI();
+    document.querySelector('.message h3').classList.add('hide');
+})
+
+
+
+// === PROCEED TO COUNTER BTN ===
+btnProceedToCounter.addEventListener('click', function(){
+    
+    if(+receiptCashOutput.textContent === 0 || 
+        receiptCashOutput.textContent == "" || 
+        +receiptCashOutput.textContent < +receiptTotalAmountOutput.textContent )
+        {
+        alert("Enter your cash");
+    } 
+    else {
+        updateHideUI();
+        messageText.textContent = "Please proceed to the counter.";
+        document.querySelector('.message h3').classList.remove('hide');
+    }
+});

@@ -3,7 +3,8 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Pinoy Snacks</title>
+        <title>Pinoy Snacks Ordering App</title>
+        <link rel="icon" type="image/x-icon" href="img/pinoy-snacks-logo.png">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://code.iconify.design/iconify-icon/1.0.1/iconify-icon.min.js"></script>
         <link rel="stylesheet" href="css/style.css">
@@ -18,14 +19,13 @@
                 <h3 class="navbar__left--name">Pinoy Snacks</h3>
             </div>
             <div class="navbar__right">
-                <input type="text" class="navbar__input" placeholder="Name">
-                <button class="navbar__btn btn">Login</button>
+                <button class="navbar__btnexit btn hide">Exit</button>
             </div>
         </nav>
 
-        <main class="margin-default">
+        <main class="margin-default app  hide">
             <section class="date-status">
-                <h3>Welcome, Name!</h3>
+                <h3>Welcome, <span class="userName"></span>!</h3>
                 <div class="date-status__datetime"><span class="dynamicDateTime"><u>date and time today</u></span></div>
             </section>
 
@@ -95,10 +95,22 @@
                     </div>
 
                     <div class="grid-container__receiptBtn btn btn--orange opacity">Proceed to Counter →</div>
+
+                    <p class="logout-timer">
+                        You will be logged out in <span class="timer">05:00</span>
+                    </p>
                 </div>
             </section>
 
         </main>
+
+        <section class="message">
+            <h1>Enter your name</h1>
+            <h3 class="hide">Order again? Enter your name</h3>
+            <input type="text" class="navbar__input" placeholder="Name">
+            <h6 class="errorTxt hide">input your name</h6>
+            <button class="navbar__btn btn">Submit</button>
+        </section>
 
         
         

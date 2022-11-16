@@ -1,0 +1,30 @@
+.message{
+    width: 80%;
+    margin: 10rem auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    &>*{
+        margin-bottom: 1rem;
+    }
+
+    h1{
+        font-size: $fs-h1;
+    }
+
+    input, button{
+        display: block;
+        width: 80%;
+    }
+
+    .errorTxt{
+        font-size: $fs-base;
+        font-weight: $fw-bold;
+        font-variant: small-caps;
+    }
+}

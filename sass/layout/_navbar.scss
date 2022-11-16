@@ -27,6 +27,7 @@
     }
     
     &__input{
+        height: 3.55rem;
         padding: 1rem 2rem;
         border: none;
         font-family: inherit;
@@ -35,7 +36,13 @@
         flex: 1;
 
         &:focus{
-            outline: $brown-2;
+            // outline: $brown-2;
+            outline-color: $brown-2;
+            font-weight: $fw-medium;
         }
+    }
+
+    &__btnexit{
+        background-color: $brown-2;
     }
 }
