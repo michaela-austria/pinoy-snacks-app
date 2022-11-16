@@ -347,7 +347,7 @@ checkboxes.forEach((checkbox, i) =>{
             inventoryOutput[i].textContent = food[i].invetory - 1;
             totalOrderContainer[i].classList.remove('hide');
             totalOrderOutput[i].textContent = food[i].price;
-            let foodName = check.path[0].id;
+            let foodName = check.target.id ?? check.path[0].id; // for safari ?? for chrome
             updateCartArray(+piecesInput[i].id, 1, food[i].price * 1, foodName);
             filterCart();
             displayCart();
@@ -365,7 +365,7 @@ checkboxes.forEach((checkbox, i) =>{
 piecesInput.forEach((pieces, i) => {
     pieces.addEventListener('change', piece =>{
         const foodID = +piece.target.id;
-        let foodName = piece.path[2].children[0].textContent;
+        let foodName = food[+piece.target.id].name ?? piece.path[2].children[0].textContent; // for safari ?? for chrome
 
         //gets value of pieces of selected choice
         let userPieces = +piece.target.value;
