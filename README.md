@@ -18,12 +18,12 @@ Pinoy Snacks is a kiosk-like ordering system. Customers can tap their food choic
 
 ## Flowchart
 
-![Flowchart](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![Flowchart](./flowchart.jpg)
 
 
 ## App Screens
 
-![Flowchart](https://via.placeholder.com/468x300?text=App+Screenshot+Here) 
+![Flowchart](./pinoysnacksapp.png) 
 ## Run Locally
 
 Install dependencies
