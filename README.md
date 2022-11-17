@@ -41,5 +41,5 @@ Start the server
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+> Read license [here](LICENSE.txt)
 
