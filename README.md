@@ -24,9 +24,9 @@ Pinoy Snacks is a kiosk-like ordering system. Customers can tap their food choic
 ## App Screens
 
 ![Flowchart](./pinoysnacksapp.png) 
-## Run Locally
 
-Install dependencies
+## Run Locally
+Install dependencies (this will install `sass` and `live-server`)
 
 ```bash
   npm install
@@ -36,6 +36,12 @@ Start the server
 
 ```bash
   npm run start
+```
+
+Build CSS
+
+```bash
+  npm run build:css
 ```
 
 
