@@ -6,7 +6,7 @@
   "scripts": {
     "start": "live-server"
   },
-  "author": "Michaela Angela Austria",
+  "author": "Michaela Austria",
   "license": "ISC",
   "devDependencies": {
     "sass": "^1.55.0"
